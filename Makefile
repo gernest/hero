@@ -36,8 +36,6 @@ deps:
 server:
 	@go run cmd/hero/hero.go s --migrate config_dev.json
 	
-travis: check
-	$(HOME)/gopath/bin/goveralls -service=travis-ci -repotoken=$(COVERALLS)
 	
 demo:
 	@go get github.com/stretchr/codecs/...

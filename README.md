@@ -32,7 +32,9 @@ Hero is a commadline application.  It also offers a library that you can use to 
 * hackable( I DARE YOU)
 * sweet( use the codebase to learn more about go(Golang))
 
-Hero is in beta state, meaning the API might change and the features might not be complete( If you don't know yet, beta means "GET IT OR GET LOST")
+
+# Project Status
+Hero is in early development a.k.a alpha state.
 
 
 # Motivation

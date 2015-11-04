@@ -1,4 +1,4 @@
-# hero [![Build Status](https://travis-ci.org/gernest/hero.svg)](https://travis-ci.org/gernest/hero)  
+# hero [![Build Status](https://travis-ci.org/gernest/hero.svg)](https://travis-ci.org/gernest/hero)  [![GoDoc](https://godoc.org/github.com/gernest/hero?status.svg)](https://godoc.org/github.com/gernest/hero)
 hero is a heroic oauth 2 provider, which is simple, elegant and beautiful.
 
 

@@ -1,4 +1,4 @@
-# hero [![Build Status](https://travis-ci.org/gernest/hero.svg)](https://travis-ci.org/gernest/hero) [![Coverage Status](https://coveralls.io/repos/gernest/hero/badge.svg?branch=master&service=github)](https://coveralls.io/github/gernest/hero?branch=master) 
+# hero [![Build Status](https://travis-ci.org/gernest/hero.svg)](https://travis-ci.org/gernest/hero)  
 hero is a heroic oauth 2 provider, which is simple, elegant and beautiful.
 
 

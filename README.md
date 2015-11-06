@@ -50,7 +50,7 @@ Prerequisite
 
 Go get the project to install it
 
-	go get github.com/gernetst/hero/cmd/hero
+	go get github.com/gernest/hero/cmd/hero
 
 This will create the hero binary for you.
 

@@ -1048,13 +1048,13 @@ func (s *Server) DeleteSession(w http.ResponseWriter, r *http.Request, namse str
 // Migrate performs database migrations.
 func (s *Server) Migrate() {
 	fmt.Print("running migrations...")
-	s.q.AutoMigrate(&Token{}, &User{}, &Session{}, &Client{}, &Grant{})
+	s.q.AutoMigrate(&Token{}, &User{},&Profile{}, &Session{}, &Client{}, &Grant{})
 	fmt.Printf("done \n")
 }
 
 // DropAllTables drops all database tables used by hero.
 func (s *Server) DropAllTables() {
-	models := []interface{}{&User{}, &Token{}, Grant{}, &Client{}, &Session{}}
+	models := []interface{}{&User{},&Profile{}, &Token{}, Grant{}, &Client{}, &Session{}}
 	for _, table := range models {
 		s.q.DropTableIfExists(table)
 	}

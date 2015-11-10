@@ -8,11 +8,25 @@ type User struct {
 	UserName  string
 	Email     string
 	Avatar    string
+	Profile   Profile
+	ProfileID int64
 	Grants    []Grant
 	Tokens    []Token
 	Clients   []Client
 	Password  string
 	CreatedAt time.Time
+}
+
+// Profile is user's profile information
+type Profile struct {
+	ID        int64
+	FirstName string
+	LastName  string
+	UserName  string
+	Email     string
+	AvatarURL string
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 // Token is a hero token object.

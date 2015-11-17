@@ -28,7 +28,7 @@
 	"session_name": "_hero",
 	"Login_template": "login.html",
 	"error_template": "error.html",
-	"register_template": "",
+	"register_template": "register.html",
 	"client_template": "client.html",
 	"profile_template": "profile.html",
 	"home_template": "home.html"

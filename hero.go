@@ -198,6 +198,7 @@ func DefaultConfig() *Config {
 		DatabaseDialect:     "postgres",
 		ErrorTemplate:       "error.html",
 		LoginTemplate:       "login.html",
+		RegisterTemplate:    "register.html",
 		CLientTemplate:      "client.html",
 		ProfileTemplate:     "profile.html",
 		HomeTemplate:        "home.html",
@@ -819,6 +820,7 @@ func (s *Server) Register(w http.ResponseWriter, r *http.Request) {
 	err := s.view.Render(w, s.cfg.RegisterTemplate, data)
 	if err != nil {
 		// TODO Log this?
+		log.Println(err, s.cfg.RegisterTemplate)
 	}
 
 }
@@ -1048,13 +1050,13 @@ func (s *Server) DeleteSession(w http.ResponseWriter, r *http.Request, namse str
 // Migrate performs database migrations.
 func (s *Server) Migrate() {
 	fmt.Print("running migrations...")
-	s.q.AutoMigrate(&Token{}, &User{},&Profile{}, &Session{}, &Client{}, &Grant{})
+	s.q.AutoMigrate(&Token{}, &User{}, &Profile{}, &Session{}, &Client{}, &Grant{})
 	fmt.Printf("done \n")
 }
 
 // DropAllTables drops all database tables used by hero.
 func (s *Server) DropAllTables() {
-	models := []interface{}{&User{},&Profile{}, &Token{}, Grant{}, &Client{}, &Session{}}
+	models := []interface{}{&User{}, &Profile{}, &Token{}, Grant{}, &Client{}, &Session{}}
 	for _, table := range models {
 		s.q.DropTableIfExists(table)
 	}

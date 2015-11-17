@@ -15,6 +15,7 @@ type User struct {
 	Clients   []Client
 	Password  string
 	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 // Profile is user's profile information

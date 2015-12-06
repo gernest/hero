@@ -146,7 +146,7 @@ home_template         |  string   | the name of the template to render at home p
 Making a configuarble application is hard, so take this with a grain of salt.
 
 
-### A note about views a,k.a templates used by `hero`
+### A note about views a.k.a templates used by `hero`
 
 The names of the templates needed by hero are found in the configuration file. If you are using the `hero` commandline application make sure the names are relative to the `templates_dir` configuration value.
 

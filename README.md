@@ -336,7 +336,7 @@ The project [osin](https://github.com/RangelReale/osin) is the foundation from w
 *  Templates hot reload.
 *  Livereload.
 *  XSRF protection.
-*  Flash messages.
+*  ~~Flash messages.~~
 
 # Licence
 

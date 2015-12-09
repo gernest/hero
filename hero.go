@@ -14,7 +14,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	//load postgres driver.
-	"github.com/gernest/helen"
 
 	// loag postgres driver
 	_ "github.com/lib/pq"
@@ -270,8 +269,7 @@ func (s *Server) Init() *Server {
 	s.mux.HandleFunc(s.cfg.InfoEndpoint, s.Info)
 
 	// static stuffs
-	h := helen.NewStatic(s.cfg.StaticDir)
-	h.Bind(StaticPath, s)
+	s.mux.Handle(StaticPath,http.StripPrefix(StaticPath,http.FileServer(http.Dir(s.cfg.StaticDir))))
 	return s
 }
 

@@ -294,7 +294,6 @@ The configuration file used by this server is at the root of this respository [c
 
 Then you can view the home page by visiting [http://localhost:8090](http://localhost:8090)
 
-You dont need to refresh your browser when running the development server. Hero will live reload your service whenever changes are made be it in the templates or the static assets( please see configuration part and note the static_dir and templates_dir).
 
 # Running the hero demo.
 There is a simple demo bundled with this repository at [hero/demo](hero/demo). 

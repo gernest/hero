@@ -135,6 +135,9 @@ const (
 
 	//StaticPath is the path for static assets.
 	StaticPath = "/static/"
+	
+	// FlashKey is the key used to store flash messages in seesion
+	FlashKey="_flash"
 )
 
 //Config conains configuration settings for hero.
@@ -269,7 +272,7 @@ func (s *Server) Init() *Server {
 	s.mux.HandleFunc(s.cfg.InfoEndpoint, s.Info)
 
 	// static stuffs
-	s.mux.Handle(StaticPath,http.StripPrefix(StaticPath,http.FileServer(http.Dir(s.cfg.StaticDir))))
+	s.mux.Handle(StaticPath, http.StripPrefix(StaticPath, http.FileServer(http.Dir(s.cfg.StaticDir))))
 	return s
 }
 
@@ -1095,4 +1098,31 @@ func (s *Server) TestClient(usr *User, c *Client) (*User, *Client) {
 		panic(err)
 	}
 	return usr, c
+}
+
+// GetFlashMessages retrieves flash messages from the session
+func (s *Server) GetFlashMessages(r *http.Request, w http.ResponseWriter) FlashMessages {
+	ss, _ := s.store.Get(r, s.cfg.SessionName)
+	if v, ok := ss.Values[FlashKey]; ok {
+		delete(ss.Values,FlashKey)
+		ss.Save(r, w)
+		return v.(FlashMessages)
+	}
+	return nil
+}
+
+// SaveFlashMessages saves flash messages into session
+func (s *Server) SaveFlashMessages(r *http.Request, w http.ResponseWriter, f FlashMessages) error {
+	ss, _ := s.store.Get(r, s.cfg.SessionName)
+	var flashes FlashMessages
+	if v, ok := ss.Values[FlashKey]; ok {
+		flashes = v.(FlashMessages)
+	}
+	ss.Values[FlashKey] = append(flashes, f...)
+	err := ss.Save(r,w)
+	if err != nil {
+		return err
+	}
+	return nil
+
 }

@@ -19,7 +19,7 @@
 	"database_dialect": "postgres",
 	"database_connection": "postgres://postgres:postgres@localhost/hero_test?sslmode=disable",
 	"templates_dir": "views",
-	"static_dir": "",
+	"static_dir": "static",
 	"session_path": "/",
 	"session_max_age": 0,
 	"session_domain": "",

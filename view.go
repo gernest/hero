@@ -13,7 +13,7 @@ import (
 )
 
 var viewFuncs = template.FuncMap{
-	"markdwon": toMarkdown,
+	"markdown": toMarkdown,
 }
 
 // View is a interface for templates rendering

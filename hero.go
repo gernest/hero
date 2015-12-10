@@ -2,6 +2,8 @@
 package hero
 
 import (
+	"io/ioutil"
+	"path/filepath"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -135,9 +137,9 @@ const (
 
 	//StaticPath is the path for static assets.
 	StaticPath = "/static/"
-	
+
 	// FlashKey is the key used to store flash messages in seesion
-	FlashKey="_flash"
+	FlashKey = "_flash"
 )
 
 //Config conains configuration settings for hero.
@@ -169,6 +171,7 @@ type Config struct {
 	CLientTemplate      string   `json:"client_template"`
 	ProfileTemplate     string   `json:"profile_template"`
 	HomeTemplate        string   `json:"home_template"`
+	DocsDir             string   `json:"docs_dir"`
 }
 
 // AccessAllowed returns true if accesType is allowed.
@@ -181,6 +184,19 @@ func (c *Config) AccessAllowed(acessType string) bool {
 		}
 	}
 	return found
+}
+
+func(c *Config)GetDoc(name string)string{
+	if c.DocsDir=="" {
+		c.DocsDir="docs"
+	}
+	fName:=filepath.Join(c.DocsDir,name)
+	b,err:=ioutil.ReadFile(fName)
+	if err!=nil{
+		// Log this?
+		return err.Error()
+	}
+	return string(b)
 }
 
 //DefaultConfig returns *Config with default values.
@@ -996,6 +1012,7 @@ func (s *Server) Client(w http.ResponseWriter, r *http.Request) {
 // Home renders hero homepage
 func (s *Server) Home(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
+	data["Config"]=s.cfg
 	err := s.view.Render(w, s.cfg.HomeTemplate, data)
 	if err != nil {
 		//TODO log this?
@@ -1104,7 +1121,7 @@ func (s *Server) TestClient(usr *User, c *Client) (*User, *Client) {
 func (s *Server) GetFlashMessages(r *http.Request, w http.ResponseWriter) FlashMessages {
 	ss, _ := s.store.Get(r, s.cfg.SessionName)
 	if v, ok := ss.Values[FlashKey]; ok {
-		delete(ss.Values,FlashKey)
+		delete(ss.Values, FlashKey)
 		ss.Save(r, w)
 		return v.(FlashMessages)
 	}
@@ -1119,7 +1136,7 @@ func (s *Server) SaveFlashMessages(r *http.Request, w http.ResponseWriter, f Fla
 		flashes = v.(FlashMessages)
 	}
 	ss.Values[FlashKey] = append(flashes, f...)
-	err := ss.Save(r,w)
+	err := ss.Save(r, w)
 	if err != nil {
 		return err
 	}

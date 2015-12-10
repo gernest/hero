@@ -9,7 +9,7 @@ import (
 	"net/http"
 
 	"github.com/gernest/hero"
-	"github.com/gernest/hero/client"
+	"github.com/gernest/hero/demo/client"
 	"github.com/stretchr/gomniauth"
 	"github.com/stretchr/objx"
 )

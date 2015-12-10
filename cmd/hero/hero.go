@@ -66,6 +66,10 @@ func serverCommand() cli.Command {
 				Name:  "dev",
 				Usage: "enable development server",
 			},
+			cli.BoolTFlag{
+				Name:  "https",
+				Usage: "enable https",
+			},
 		},
 	}
 }

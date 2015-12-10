@@ -11,7 +11,7 @@ ifeq "$(origin DB_DIALECT)" "undefined"
 DB_DIALECT=$(DEFAULT_DIALECT)
 endif
 
-test: check
+test: check testapp
 	@DB_CONN=$(DB_CONN) DB_DIALECT=$(DB_DIALECT) go test -v -cover
 
 check:

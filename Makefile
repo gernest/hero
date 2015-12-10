@@ -32,6 +32,7 @@ clean:
 deps: 
 	@go get github.com/golang/lint/golint
 	@go get github.com/smartystreets/goconvey	
+	@go get github.com/mitchellh/gox
 	
 server:
 	@go run cmd/hero/hero.go s --migrate config_dev.json
@@ -41,4 +42,6 @@ demo:
 	@go get github.com/stretchr/codecs/...
 	@go get github.com/stretchr/gomniauth
 	@cd demo && go run main.go
-	
+
+dist:
+	@gox -output="bin/{{.Dir}}v$(VERSION)_{{.OS}}_{{.Arch}}/{{.Dir}}" ./cmd/hero

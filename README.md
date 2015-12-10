@@ -304,18 +304,12 @@ To run the demo just do this command
 
 And visit <http://localhost:8001/login> to do oauth login.
 
-# Screenshot of tests in action
-
-![ Pass ]( convey.png )
-
-
 
 # Author
-Geofrey Ernest <geofreyernest@live.com>
+Geofrey Ernest
 
 Twitter  : [@gernesti](https://twitter.com/gernesti)
 
-Facebook : [Geofrey Ernest](https://www.facebook.com/geofrey.ernest.35)
 
 
 # Aknowledgement

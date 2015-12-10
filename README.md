@@ -330,7 +330,7 @@ The project [osin](https://github.com/RangelReale/osin) is the foundation from w
 *  implement the views templates( I need help here, I suck at styles)
 *  Support https.
 *  Add extensive documentation.
-*  ~~~Demo with examples.~~~
+*  ~~Demo with examples.~~
 *  Let's encrypt integration.
 *  Add logging support.
 *  Templates hot reload.

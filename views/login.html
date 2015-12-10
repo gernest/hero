@@ -1,28 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<body>
-	<table>
-		<tr>
-			<td>
-			username
-			</td>
-			<td>
-			hero
-			</td>
-		<tr>
-		<tr>
-			<td>
-			password
-			</td>
-			<td>
-			hero
-			</td>
-		<tr>
-	</table>
-	<form  action="{{.Action}}" method="post">
-	<input placeholder= "username" name="login_username" />
-	<input placeholder="password" name="login_password"/>
-	<input type="submit" value="Login"/>
-	</form>
-	</body>
-</html>
+{{template "partial/head.html"}}
+	{{template "forms/login.html" .}}
+{{template "partial/footer.html"}}

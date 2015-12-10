@@ -8,7 +8,13 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/a8m/mark"
 )
+
+var viewFuncs = template.FuncMap{
+	"markdwon": toMarkdown,
+}
 
 // View is a interface for templates rendering
 type View interface {
@@ -24,7 +30,7 @@ type DefaultView struct {
 // loaded.
 func NewDefaultView(templatesDir string) (*DefaultView, error) {
 	tpl := &DefaultView{
-		tpl: template.New("hero"),
+		tpl: template.New("hero").Funcs(viewFuncs),
 	}
 	if err := tpl.load(templatesDir); err != nil {
 		return nil, err
@@ -70,4 +76,9 @@ func (v *DefaultView) load(templatesDir string) error {
 // Render renders template tplName passing data as context. The result is writen to out.
 func (v *DefaultView) Render(out io.Writer, tplName string, data interface{}) error {
 	return v.tpl.ExecuteTemplate(out, tplName, data)
+}
+
+// Helper for rendering markdown.
+func toMarkdown(src string) template.HTML {
+	return template.HTML(mark.Render(src))
 }

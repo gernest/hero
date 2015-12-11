@@ -2,14 +2,14 @@
 package hero
 
 import (
-	"io/ioutil"
-	"path/filepath"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
+	"path/filepath"
 	"strconv"
 
 	// load mysql driver.
@@ -186,13 +186,14 @@ func (c *Config) AccessAllowed(acessType string) bool {
 	return found
 }
 
-func(c *Config)GetDoc(name string)string{
-	if c.DocsDir=="" {
-		c.DocsDir="docs"
+//GetDoc reads the content of a file named name found inside the *Config.DocsDir directory.
+func (c *Config) GetDoc(name string) string {
+	if c.DocsDir == "" {
+		c.DocsDir = "docs"
 	}
-	fName:=filepath.Join(c.DocsDir,name)
-	b,err:=ioutil.ReadFile(fName)
-	if err!=nil{
+	fName := filepath.Join(c.DocsDir, name)
+	b, err := ioutil.ReadFile(fName)
+	if err != nil {
 		// Log this?
 		return err.Error()
 	}
@@ -1012,7 +1013,7 @@ func (s *Server) Client(w http.ResponseWriter, r *http.Request) {
 // Home renders hero homepage
 func (s *Server) Home(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
-	data["Config"]=s.cfg
+	data["Config"] = s.cfg
 	err := s.view.Render(w, s.cfg.HomeTemplate, data)
 	if err != nil {
 		//TODO log this?

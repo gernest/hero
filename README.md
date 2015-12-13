@@ -218,7 +218,7 @@ The project [osin](https://github.com/RangelReale/osin) is the foundation from w
 *  ~~Demo with examples.~~
 *  Let's encrypt integration.
 *  Add logging support.
-*  Templates hot reload.
+*  ~~Templates hot reload.~~
 *  Livereload.
 *  XSRF protection.
 *  ~~Flash messages.~~

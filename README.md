@@ -28,6 +28,7 @@ Hero is a commadline application.  It also offers a library that you can use to 
 * User profiles
 * Configurable.
 * Multiple databases( postgres, mysql and foundation)
+* Hot templates reload for rapid development(no need to recompile when run with `-dev` flag).
 
 
 # Project Status

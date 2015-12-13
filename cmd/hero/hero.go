@@ -87,6 +87,14 @@ func server(ctx *cli.Context) {
 	}
 	s := hero.NewServer(cfg, &hero.SimpleTokenGen{}, nil)
 
+	if ctx.BoolT("dev") {
+		v, err := hero.NewDefaultView(cfg.TemplatesDir, true)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		s = hero.NewServer(cfg, &hero.SimpleTokenGen{}, v)
+	}
 	if ctx.BoolT("migrate") {
 		s.Migrate()
 	}

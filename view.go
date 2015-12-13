@@ -26,7 +26,7 @@ type DefaultView struct {
 // loaded.
 func NewDefaultView(templatesDir string, watch bool) (*DefaultView, error) {
 	config := &hot.Config{
-		Watch:          false,
+		Watch:          watch,
 		BaseName:       "hero",
 		Dir:            templatesDir,
 		Funcs:          viewFuncs,

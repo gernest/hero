@@ -35,7 +35,7 @@ deps:
 	@go get github.com/mitchellh/gox
 	
 server:
-	@go run cmd/hero/hero.go s --migrate config_dev.json
+	@go run cmd/hero/hero.go s --migrate -dev config_dev.json
 	
 	
 demo:

@@ -6,19 +6,7 @@ import (
 )
 
 func TestView(t *testing.T) {
-
-	sampleBadTplDir := []string{
-		"bogus", "fixtures/views/hello.tpl",
-	}
-
-	for _, v := range sampleBadTplDir {
-		_, err := NewDefaultView(v)
-		if err == nil {
-			t.Error("expected an error")
-		}
-	}
-
-	view, err := NewDefaultView("fixtures/views")
+	view, err := NewDefaultView("fixtures/views", false)
 	if err != nil {
 		t.FailNow()
 	}

@@ -256,7 +256,7 @@ func NewServer(cfg *Config, gen TokenGenerator, view View) *Server {
 	q := &query{}
 	q.DB = &db
 	if view == nil {
-		view, err = NewDefaultView(cfg.TemplatesDir)
+		view, err = NewDefaultView(cfg.TemplatesDir, false)
 		if err != nil {
 			panic(err)
 		}

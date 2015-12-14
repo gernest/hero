@@ -19,7 +19,7 @@ check:
 	@golint
 
 convey:
-	@DB_CONN=$(DB_CONN) DB_DIALECT=$(DB_DIALECT) goconvey
+	@DB_CONN=$(DB_CONN) DB_DIALECT=$(DB_DIALECT) goconvey -port 8000
 	
 
 testapp:

@@ -2,7 +2,6 @@
 package hero
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -1051,13 +1050,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 //Profile handle user profile.
 func (s *Server) Profile(w http.ResponseWriter, r *http.Request) {
-	data := make(map[string]interface{})
-	data["id"] = "id"
-	data["email"] = "email"
-	data["avatar_url"] = r.Header
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(data)
-	return
+
 }
 
 // DeleteSession deletes cookie session named name.

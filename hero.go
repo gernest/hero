@@ -271,7 +271,7 @@ func NewServer(cfg *Config, gen TokenGenerator, view View) *Server {
 	return s.Init()
 }
 
-// Init registers the url routes.
+// Init registers the url routes. This uses *http.ServerMux as its router.
 func (s *Server) Init() *Server {
 
 	// normal stuffs
@@ -717,7 +717,8 @@ func (s *Server) finalizeAccess(authGrant *Grant, ctx *context) (accessGrant *Gr
 	return
 }
 
-// Info provide user information using Bearer token.
+// Info provide user information using Bearer token. The information served is user email, name and 
+// avatar_url(this is the link to the user's profile picture a.k.a avatar.
 func (s *Server) Info(w http.ResponseWriter, r *http.Request) {
 	ctx := newContext(w)
 

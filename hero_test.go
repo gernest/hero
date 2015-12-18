@@ -266,7 +266,6 @@ func TestServer_Authorize(t *testing.T) {
 		params.responseType:  {requestType.Token},
 		loginParams.username: {genericUser.UserName},
 		loginParams.password: {genericUser.Password},
-		//		params.redirectURL:   {"/"},
 	}
 
 	req, err = http.NewRequest("POST", authPath, strings.NewReader(tokenParams.Encode()))
@@ -340,29 +339,4 @@ func TestServer_Access(t *testing.T) {
 
 	testServer.ServeHTTP(w, req)
 
-	//
-	//
-	//
-	//	client, err := testServer.q.ClientByCode(genericClient.UUID)
-	//	if err != nil {
-	//		t.Fatal(err)
-	//	}
-	//	grants := []*Grant{}
-	//	d := testServer.q.Model(client).Related(&grants)
-	//	if d.Error != nil {
-	//		t.Error(d.Error)
-	//	}
-
-	//	grant := grants[0]
-
-	//	accessParams.Set(params.code, grant.Code)
-	//	req, err = http.NewRequest("POST", testServer.cfg.TokenEndpoint, strings.NewReader(accessParams.Encode()))
-	//	if err != nil {
-	//		t.Error(err)
-	//	}
-	//	req.Header.Set("Content-Type", formURLEncoded)
-
-	//	w = httptest.NewRecorder()
-
-	//	testServer.ServeHTTP(w, req)
 }

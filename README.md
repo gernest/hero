@@ -141,37 +141,6 @@ profile_template      |  string   | the name of the template to render on user p
 home_template         |  string   | the name of the template to render at home page
 
 
-Making a configuarble application is hard, so take this with a grain of salt.
-
-
-### A note about views a.k.a templates used by `hero`
-
-The names of the templates needed by hero are found in the configuration file. If you are using the `hero` commandline application make sure the names are relative to the `templates_dir` configuration value.
-
-You can create your own views, hero uses [text/template]() templates. You should Invest in differnetiating your brand. hero ships with ready to use, ready to customize views for you, they can be found here [views](views). You can help improve the default views, hero welcomes your contribution.
-
-The following are the templates names and the form fields that are expected to be present when submitting values to the server.
-
-The `template name` part of the tample refers to the value supplied in the configuration file.
-
-template name    | form value| data passed to template
------------------|-----------|--------------------------
-home_template    | none      | `.Config`
-login_template   |`login_username`, `login_password`| `.Config`
-register_template|`register_username`,`register_password`, `register_confirm`,`register_email`|`.Config`
-client_template  | `client_name`, `client_secret`| `.Config`
-profile_template | none | `.Config`
-error_template   | none| `.Config`,`.Message`,`.StatusCode`
-
-The following is the table of data(context) passed to templates and their meaning
-
- context data| details
--------------|---------------------------------------------------------
-`.Config`    | The configuration object of the server.
-`.User`      | The instance of a loged in user profile.
-`.Message`   | The error message passed to the `error_template`
-`.StatusCode`| http status code passed yo the `error_template` . This is to help customize error rendering.
-
 
 # Step 2: Run
 

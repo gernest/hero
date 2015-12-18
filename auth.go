@@ -7,15 +7,23 @@ import (
 	"strings"
 )
 
+//basicAuth stores information for basic authentication of oauth clients. Basic authentication
+// involves username and password.
 type basicAuth struct {
 	UserName string
 	Password string
 }
 
+//bererAuth stores the code for authenciating clients using bearer token.
 type bearerAuth struct {
 	Code string
 }
 
+//getClientAuth returns the basic authentication details from the given request. if the allowParams is
+// set to true then the basic auth information will be extracted from the request query parameters.
+// Make sure you call r.Parse() before calling this, so as to make the query params available in r.Form
+//
+// Default the details are extracted from the request header.
 func getCLientAuth(r *http.Request, allowQueryParams bool) (*basicAuth, error) {
 	auth := &basicAuth{
 		UserName: r.Form.Get("client_id"),
@@ -27,6 +35,8 @@ func getCLientAuth(r *http.Request, allowQueryParams bool) (*basicAuth, error) {
 	return checkBasicAuth(r)
 }
 
+// checkBasiAuth returns basic client athentication  details from the given request. The information is
+// extracted from the request header.
 func checkBasicAuth(r *http.Request) (*basicAuth, error) {
 	var (
 		basic                   = "Basic"
@@ -53,6 +63,7 @@ func checkBasicAuth(r *http.Request) (*basicAuth, error) {
 
 }
 
+//checkBearerAuth checks for bearer token in the request header.
 func checkBearerAuth(r *http.Request) *bearerAuth {
 	var (
 		auth   = "Authorization"

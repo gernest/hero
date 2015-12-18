@@ -236,6 +236,7 @@ type Server struct {
 	cfg   *Config
 	gen   TokenGenerator
 	view  View
+	log   Logger
 	store *Store
 	mux   *http.ServeMux
 }
@@ -265,6 +266,7 @@ func NewServer(cfg *Config, gen TokenGenerator, view View) *Server {
 		cfg:   cfg,
 		gen:   gen,
 		view:  view,
+		log:   NewLogger(),
 		mux:   http.NewServeMux(),
 		store: DefaultStore(q.DB),
 	}
@@ -356,7 +358,7 @@ func (s *Server) Authorize(w http.ResponseWriter, r *http.Request) {
 
 		err = s.view.Render(w, s.cfg.LoginTemplate, data)
 		if err != nil {
-			//TODO log this?
+			s.log.Println(err)
 		}
 		return
 	}
@@ -637,12 +639,13 @@ func (s *Server) getClient(auth interface{}) *Client {
 
 		access, err := s.q.TokenByCode(bAuth.Code)
 		if err != nil {
-			// TODO log this?
+			s.log.Println(err)
 			return nil
 		}
 		client := &Client{}
 		dd := s.q.Where(&Client{ID: access.ClientID}).First(client)
 		if dd.Error != nil {
+			s.log.Println(dd.Error)
 			return nil
 		}
 		return client
@@ -717,7 +720,7 @@ func (s *Server) finalizeAccess(authGrant *Grant, ctx *context) (accessGrant *Gr
 	return
 }
 
-// Info provide user information using Bearer token. The information served is user email, name and 
+// Info provide user information using Bearer token. The information served is user email, name and
 // avatar_url(this is the link to the user's profile picture a.k.a avatar.
 func (s *Server) Info(w http.ResponseWriter, r *http.Request) {
 	ctx := newContext(w)
@@ -837,8 +840,7 @@ func (s *Server) Register(w http.ResponseWriter, r *http.Request) {
 
 	err := s.view.Render(w, s.cfg.RegisterTemplate, data)
 	if err != nil {
-		// TODO Log this?
-		log.Println(err, s.cfg.RegisterTemplate)
+		s.log.Println(err)
 	}
 
 }
@@ -854,7 +856,7 @@ func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 			// create session and redirect to the homepage
 			serr := s.SaveToSession(w, r, "UserID", usr.ID)
 			if serr != nil {
-				//???
+				s.log.Println(serr)
 			}
 			http.Redirect(w, r, HomePath, http.StatusFound)
 			return
@@ -865,7 +867,7 @@ func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 	}
 	err := s.view.Render(w, s.cfg.LoginTemplate, data)
 	if err != nil {
-		// TODO Log this?
+		s.log.Println(err)
 	}
 }
 func (s *Server) loginUser(w http.ResponseWriter, r *http.Request) *User {
@@ -884,7 +886,7 @@ func (s *Server) loginUser(w http.ResponseWriter, r *http.Request) *User {
 
 	err := s.view.Render(w, s.cfg.LoginTemplate, data)
 	if err != nil {
-		//TODO log this?
+		s.log.Println(err)
 	}
 	return nil
 }
@@ -900,11 +902,12 @@ func (s *Server) validUser(r *http.Request, username, password string) *User {
 		usr, err = s.q.UserByUserName(username)
 	}
 	if err != nil {
-		//TODO log this?
+		s.log.Println(err)
 		return nil
 	}
 	err = compareHashedString(usr.Password, password)
 	if err != nil {
+		s.log.Println(err)
 		return nil
 	}
 	return usr
@@ -1005,7 +1008,7 @@ func (s *Server) Client(w http.ResponseWriter, r *http.Request) {
 	}
 	err = s.view.Render(w, s.cfg.CLientTemplate, data)
 	if err != nil {
-		//TODO log this?
+		s.log.Println(err)
 	}
 
 }
@@ -1016,7 +1019,7 @@ func (s *Server) Home(w http.ResponseWriter, r *http.Request) {
 	data["Config"] = s.cfg
 	err := s.view.Render(w, s.cfg.HomeTemplate, data)
 	if err != nil {
-		//TODO log this?
+		s.log.Println(err)
 	}
 }
 
@@ -1024,7 +1027,7 @@ func (s *Server) Home(w http.ResponseWriter, r *http.Request) {
 func (s *Server) SaveToSession(w http.ResponseWriter, r *http.Request, key string, value interface{}) error {
 	ss, err := s.store.Get(r, s.cfg.SessionName)
 	if err != nil {
-		// ???
+		s.log.Println(err)
 	}
 	ss.Values[key] = value
 	return ss.Save(r, w)
@@ -1082,7 +1085,7 @@ func (s *Server) Run() {
 	if s.cfg.Port != 0 {
 		port = s.cfg.Port
 	}
-	fmt.Printf("starting hero service at  %s:%d \n", host, port)
+	s.log.Printf("starting hero service at  %s:%d \n", host, port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), s))
 }
 

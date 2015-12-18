@@ -1,12 +1,21 @@
 package hero
 
-import "log"
+import (
+	"log"
+	"os"
+)
 
 // Logger is an interface for logging
 type Logger interface {
 	Print(v ...interface{})
-	PrintLn(v ...interface{})
+	Println(v ...interface{})
 	Printf(fmt string, v ...interface{})
+}
+
+// NewLogger returns a new logeer that writes to stdout
+func NewLogger() Logger {
+	l := log.New(os.Stdout, "hero :", log.Lshortfile)
+	return &DefaultLogger{log: l}
 }
 
 // DefaultLogger implements a Logger interface that writes logs to stdout

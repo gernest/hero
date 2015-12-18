@@ -4,6 +4,7 @@ package hero
 // OAUTH2 error codes
 //
 
+//errorsKeys are keys for various ouath 2.0 error messages.
 var errorsKeys = struct {
 	InvalidRequest          string
 	UnauthoredClient        string

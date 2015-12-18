@@ -39,7 +39,3 @@ func TestMain(m *testing.M) {
 	}
 	os.Exit(status)
 }
-
-func isTravis() bool {
-	return false
-}

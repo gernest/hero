@@ -820,7 +820,7 @@ func (s *Server) Register(w http.ResponseWriter, r *http.Request) {
 			data["message"] = err.Error()
 			rerr := s.view.Render(w, s.cfg.ErrorTemplate, data)
 			if rerr != nil {
-				//TODO log this?
+				s.log.Println(rerr)
 			}
 			return
 		}
@@ -838,7 +838,7 @@ func (s *Server) Register(w http.ResponseWriter, r *http.Request) {
 			data["message"] = err.Error()
 			rerr := s.view.Render(w, s.cfg.ErrorTemplate, data)
 			if rerr != nil {
-				//TODO log this?
+				s.log.Println(rerr)
 			}
 			return
 		}

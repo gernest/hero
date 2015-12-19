@@ -1,4 +1,4 @@
-{{template "partial/head.html"}}
+{{template "partial/head.html" .}}
     <div class="wrapper">
       <header>
         <h1>Minimal</h1>
@@ -13,4 +13,4 @@
       <section>
 		{{.Config.GetDoc "home.md" |markdown}}
       </section>
-{{template "partial/footer.html"}}
+{{template "partial/footer.html" .}}

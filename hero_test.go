@@ -236,21 +236,20 @@ func TestServer_Authorize(t *testing.T) {
 	//
 	c, _ := testServer.q.ClientByCode(client.UUID)
 	c.RedirectURL = "http://example.com"
-
 	err = testServer.q.SaveModel(c)
 	if err != nil {
 		t.Error(err)
 	}
-
 	req, err = http.NewRequest("POST", authPath, strings.NewReader(authParams.Encode()))
 	if err != nil {
 		t.Error(err)
 	}
 	req.Header.Set("Content-Type", formURLEncoded)
-
 	w = httptest.NewRecorder()
-
 	testServer.ServeHTTP(w, req)
+	if !strings.Contains(w.Body.String(), "login") {
+		t.Error("should render the login view")
+	}
 
 	//
 	// case request_type is code

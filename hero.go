@@ -360,6 +360,7 @@ func (s *Server) Authorize(w http.ResponseWriter, r *http.Request) {
 	}
 	if usr == nil {
 		data["Action"] = r.URL.String()
+		data["Title"] = "login"
 
 		err = s.view.Render(w, s.cfg.LoginTemplate, data)
 		if err != nil {
@@ -856,6 +857,7 @@ func (s *Server) Register(w http.ResponseWriter, r *http.Request) {
 // Login loges in a user.
 func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
+	data["Title"] = "login"
 	data["Config"] = s.cfg
 	if r.Method == "POST" {
 		r.ParseForm()
@@ -882,6 +884,7 @@ func (s *Server) loginUser(w http.ResponseWriter, r *http.Request) *User {
 	r.ParseForm()
 	data := make(map[string]interface{})
 	data["Config"] = s.cfg
+	data["Title"] = "login"
 	if r.Method == "POST" {
 		username := r.Form.Get(loginParams.username)
 		password := r.Form.Get(loginParams.password)
@@ -1025,6 +1028,8 @@ func (s *Server) Client(w http.ResponseWriter, r *http.Request) {
 func (s *Server) Home(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
 	data["Config"] = s.cfg
+	data["Title"] = "Heroes"
+
 	err := s.view.Render(w, s.cfg.HomeTemplate, data)
 	if err != nil {
 		s.log.Println(err)

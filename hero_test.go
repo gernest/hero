@@ -133,12 +133,10 @@ func TestServer_Authorize(t *testing.T) {
 	}
 
 	// create a new client that belongs to the genericUser
-
 	user, err := testServer.q.UserByEmail(genericUser.Email)
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	secureSecret, err := hashString(genericClient.Secret)
 	if err != nil {
 		t.Error(err)
@@ -149,7 +147,6 @@ func TestServer_Authorize(t *testing.T) {
 		Secret: secureSecret,
 	}
 	user.Clients = append(user.Clients, client)
-
 	err = testServer.q.SaveModel(user)
 	if err != nil {
 		t.Error(err)
@@ -159,23 +156,18 @@ func TestServer_Authorize(t *testing.T) {
 	// subsequest tests
 	iC := &genericClient
 	iC.UUID = client.UUID
-
 	authPath := testServer.cfg.AuthEndpoint
 
 	//
 	// case no any form values
 	//
 	authParams := url.Values{}
-
 	req, err := http.NewRequest("POST", authPath, strings.NewReader(authParams.Encode()))
 	if err != nil {
 		t.Error(err)
 	}
-
 	req.Header.Set("Content-Type", formURLEncoded)
-
 	w := httptest.NewRecorder()
-
 	testServer.ServeHTTP(w, req)
 	jObj, err := jason.NewObjectFromReader(w.Body)
 	if err != nil {
@@ -213,10 +205,31 @@ func TestServer_Authorize(t *testing.T) {
 		t.Error(err)
 	}
 	req.Header.Set("Content-Type", formURLEncoded)
-
 	w = httptest.NewRecorder()
-
 	testServer.ServeHTTP(w, req)
+	jObj, err = jason.NewObjectFromReader(w.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// check error key
+	resErr, err = jObj.GetString("error")
+	if err != nil {
+		t.Error(err)
+	}
+	if resErr != errorsKeys.UnauthoredClient {
+		t.Errorf("expected %s got %S", errorsKeys.UnauthoredClient, resErr)
+	}
+
+	// check the error description, it should return error description for
+	// errorKeys.UnauthoredClient
+	resDescription, err = jObj.GetString("error_description")
+	if err != nil {
+		t.Error(err)
+	}
+	errDescription = baseOauthErrs.Get(errorsKeys.UnauthoredClient)
+	if resDescription != errDescription {
+		t.Errorf("expected %s got %s", errDescription, resDescription)
+	}
 
 	//
 	// case cleint_id with RedirectURL

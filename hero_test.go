@@ -6,6 +6,8 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+
+	"github.com/antonholmquist/jason"
 )
 
 const formURLEncoded = "application/x-www-form-urlencoded"
@@ -175,6 +177,29 @@ func TestServer_Authorize(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	testServer.ServeHTTP(w, req)
+	jObj, err := jason.NewObjectFromReader(w.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// check error key
+	resErr, err := jObj.GetString("error")
+	if err != nil {
+		t.Error(err)
+	}
+	if resErr != errorsKeys.ServerError {
+		t.Errorf("expected %s got %S", errorsKeys.ServerError, resErr)
+	}
+
+	// check the error description, it should return error description for
+	// errorKeys.ServerError
+	resDescription, err := jObj.GetString("error_description")
+	if err != nil {
+		t.Error(err)
+	}
+	errDescription := baseOauthErrs.Get(errorsKeys.ServerError)
+	if resDescription != errDescription {
+		t.Errorf("expected %s got %s", errDescription, resDescription)
+	}
 
 	//
 	// case only the client_id, the client has no RedirectURL

@@ -185,7 +185,10 @@ func (c *Config) AccessAllowed(acessType string) bool {
 	return found
 }
 
-//GetDoc reads the content of a file named name found inside the *Config.DocsDir directory.
+// GetDoc reads the content of a file named name found inside the *Config.DocsDir
+// directory. This is a convenience
+// to be used in templates especially inserting contents from markdown files,
+// used in combination with other tempalates functions.
 func (c *Config) GetDoc(name string) string {
 	if c.DocsDir == "" {
 		c.DocsDir = "docs"
@@ -227,10 +230,12 @@ func DefaultConfig() *Config {
 	}
 }
 
-// Server is the heroic oauth2 provider.
+// Server is the oauth 2.0  provider.
 //
 // It implements http.Server interface. This uses *http.ServeMux to register
 // and serve its routes.
+//
+// This provide both resource owner, resource server and authorization server.
 type Server struct {
 	q     *query
 	cfg   *Config
@@ -417,7 +422,11 @@ func (s *Server) Authorize(w http.ResponseWriter, r *http.Request) {
 	ctx.CommitJSON()
 }
 
-// Access provide oauth2 access.
+// Access provide oauth 2.0  access. This support all grant rypes specified by RFC 6976 namely
+//	* Authorization code
+//	* Implicit
+//	* Resource owner password credentials
+//	* Client credentials
 func (s Server) Access(w http.ResponseWriter, r *http.Request) {
 	ctx := newContext(w)
 	if r.Method == "GET" {
@@ -577,8 +586,7 @@ func (s Server) Access(w http.ResponseWriter, r *http.Request) {
 
 			grant := &Grant{
 				Scope:    scope,
-				ClientID: client.ID,
-				UserID:   client.UserID,
+				ClientID: client.ID, UserID: client.UserID,
 			}
 			_, err = s.finalizeAccess(grant, ctx)
 			if err != nil {
@@ -1140,4 +1148,9 @@ func (s *Server) SaveFlashMessages(r *http.Request, w http.ResponseWriter, f Fla
 	}
 	return nil
 
+}
+
+// SetLogger sets l as the main logger.
+func (s *Server) SetLogger(l Logger) {
+	s.log = l
 }

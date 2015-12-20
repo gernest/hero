@@ -179,7 +179,7 @@ func TestServer_Authorize(t *testing.T) {
 		t.Error(err)
 	}
 	if resErr != errorsKeys.ServerError {
-		t.Errorf("expected %s got %S", errorsKeys.ServerError, resErr)
+		t.Errorf("expected %s got %s", errorsKeys.ServerError, resErr)
 	}
 
 	// check the error description, it should return error description for
@@ -217,7 +217,7 @@ func TestServer_Authorize(t *testing.T) {
 		t.Error(err)
 	}
 	if resErr != errorsKeys.UnauthoredClient {
-		t.Errorf("expected %s got %S", errorsKeys.UnauthoredClient, resErr)
+		t.Errorf("expected %s got %s", errorsKeys.UnauthoredClient, resErr)
 	}
 
 	// check the error description, it should return error description for

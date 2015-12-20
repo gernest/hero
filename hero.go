@@ -108,9 +108,9 @@ var (
 		Message    string
 		StatusCode string
 	}{
-		"COnfig",
+		"Config",
 		"Message",
-		"StatusCoe",
+		"StatusCode",
 	}
 )
 

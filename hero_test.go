@@ -258,15 +258,12 @@ func TestServer_Authorize(t *testing.T) {
 		params.clientID:     {client.UUID},
 		params.responseType: {requestType.Code},
 	}
-
 	req, err = http.NewRequest("POST", authPath, strings.NewReader(authParams.Encode()))
 	if err != nil {
 		t.Error(err)
 	}
 	req.Header.Set("Content-Type", formURLEncoded)
-
 	w = httptest.NewRecorder()
-
 	testServer.ServeHTTP(w, req)
 
 	//
@@ -279,19 +276,16 @@ func TestServer_Authorize(t *testing.T) {
 		t.Error(err)
 	}
 	req.Header.Set("Content-Type", formURLEncoded)
-
 	w = httptest.NewRecorder()
-
 	testServer.ServeHTTP(w, req)
 	if w.Code != http.StatusFound {
 		t.Errorf("expected %d got %d", http.StatusFound, w.Code)
 	}
-
 	q, err := url.ParseRequestURI(w.Header().Get("Location"))
 	if err != nil {
 		t.Error(err)
 	}
-
+	// get the code that is returned from the redirect url
 	code := q.Query().Get("code")
 	if code == "" {
 		t.Error("expected grant code")
@@ -310,9 +304,7 @@ func TestServer_Authorize(t *testing.T) {
 		t.Error(err)
 	}
 	req.Header.Set("Content-Type", formURLEncoded)
-
 	w = httptest.NewRecorder()
-
 	testServer.ServeHTTP(w, req)
 	if w.Code != http.StatusFound {
 		t.Errorf("expected %d got %d", http.StatusFound, w.Code)

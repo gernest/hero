@@ -24,7 +24,7 @@ Hero is a commadline application.  It also offers a library that you can use to 
 * Clients management
 * Client authorization
 * Client authentication
-* oauth 2 [rfc 6974](http://tools.ietf.org/html/rfc6749) compliant
+* oauth 2 [rfc 6749](http://tools.ietf.org/html/rfc6749) compliant
 * User profiles
 * Configurable.
 * Multiple databases( postgres, mysql and foundation)

@@ -358,6 +358,10 @@ func (s *Server) Authorize(w http.ResponseWriter, r *http.Request) {
 
 		usr = s.validUser(r, username, password)
 	}
+
+	// Case we can't find the user. The user-agent is served  with login template
+	// that is used to authenticate the user. All re original query paametersare
+	// retained by passing them through a template context variable Action.
 	if usr == nil {
 		data["Action"] = r.URL.String()
 		data["Title"] = "login"

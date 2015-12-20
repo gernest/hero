@@ -216,8 +216,8 @@ func TestServer_Authorize(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if resErr != errorsKeys.UnauthoredClient {
-		t.Errorf("expected %s got %s", errorsKeys.UnauthoredClient, resErr)
+	if resErr != errorsKeys.UnauthorizedClient {
+		t.Errorf("expected %s got %s", errorsKeys.UnauthorizedClient, resErr)
 	}
 
 	// check the error description, it should return error description for
@@ -226,7 +226,7 @@ func TestServer_Authorize(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	errDescription = baseOauthErrs.Get(errorsKeys.UnauthoredClient)
+	errDescription = baseOauthErrs.Get(errorsKeys.UnauthorizedClient)
 	if resDescription != errDescription {
 		t.Errorf("expected %s got %s", errDescription, resDescription)
 	}

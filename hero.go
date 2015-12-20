@@ -319,7 +319,7 @@ func (s *Server) Authorize(w http.ResponseWriter, r *http.Request) {
 	client, err := s.q.ClientByCode(clientID)
 	if err != nil {
 		if err.Error() == gorm.RecordNotFound.Error() {
-			ctx.SetErrorState(errorsKeys.UnauthoredClient, "", state)
+			ctx.SetErrorState(errorsKeys.UnauthorizedClient, "", state)
 		} else {
 			ctx.SetErrorState(errorsKeys.ServerError, "", state)
 		}
@@ -329,7 +329,7 @@ func (s *Server) Authorize(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if client.RedirectURL == "" {
-		ctx.SetErrorState(errorsKeys.UnauthoredClient, "", state)
+		ctx.SetErrorState(errorsKeys.UnauthorizedClient, "", state)
 		ctx.CommitJSON()
 		return
 	}
@@ -478,7 +478,7 @@ func (s Server) Access(w http.ResponseWriter, r *http.Request) {
 
 			grant, err := s.q.GrantByCLient(client, code)
 			if err != nil {
-				ctx.SetError(errorsKeys.UnauthoredClient, "")
+				ctx.SetError(errorsKeys.UnauthorizedClient, "")
 				ctx.InternalError = err
 				break
 			}
@@ -524,7 +524,7 @@ func (s Server) Access(w http.ResponseWriter, r *http.Request) {
 			}
 
 			if grant.ClientID != client.ID {
-				ctx.SetError(errorsKeys.UnauthoredClient, "")
+				ctx.SetError(errorsKeys.UnauthorizedClient, "")
 				ctx.InternalError = err
 				break
 			}
@@ -760,7 +760,7 @@ func (s *Server) Info(w http.ResponseWriter, r *http.Request) {
 
 	client := s.getClient(bearer)
 	if client == nil {
-		ctx.SetError(errorsKeys.UnauthoredClient, "")
+		ctx.SetError(errorsKeys.UnauthorizedClient, "")
 		ctx.CommitJSON()
 		return
 	}

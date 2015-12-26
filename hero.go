@@ -173,6 +173,7 @@ type Config struct {
 	ProfileTemplate     string   `json:"profile_template"`
 	HomeTemplate        string   `json:"home_template"`
 	DocsDir             string   `json:"docs_dir"`
+	CsrfSecret          string   `json:"csrf_secret"`
 }
 
 // AccessAllowed returns true if accesType is allowed.
@@ -229,6 +230,7 @@ func DefaultConfig() *Config {
 		SessionPath:         "/",
 		SessionName:         "_hero",
 		Port:                8090,
+		CsrfSecret:          "w4PYxQjVP9ZStjWpBt5t28CEBmRs8NPx",
 	}
 }
 
@@ -282,13 +284,8 @@ func NewServer(cfg *Config, gen TokenGenerator, view View) *Server {
 
 // Init registers the url routes. This uses *http.ServerMux as its router.
 func (s *Server) Init() *Server {
-
-	//csrf protection
-	tok, err := generateRandomToken(csrfTokenLength)
-	if err != nil {
-		panic(err)
-	}
-	protect := csrf.Protect(tok)
+	// csrf protection
+	protect := csrf.Protect([]byte(s.cfg.CsrfSecret))
 
 	// normal stuffs
 	s.mux.HandleFunc(HomePath, s.Home)

@@ -19,6 +19,10 @@ type JWTTokenGen struct {
 	privateKey []byte
 }
 
+func NewJWTGen(public, private []byte) *JWTTokenGen {
+	return &JWTTokenGen{publicKey: public, privateKey: private}
+}
+
 func (j *JWTTokenGen) Generate() string {
 	exp := now.EndOfYear()
 	token := jwt.New(jwt.SigningMethodRS256)

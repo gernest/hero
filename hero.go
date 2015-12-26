@@ -13,8 +13,8 @@ import (
 
 	// load mysql driver.
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/csrf"
 	"github.com/jinzhu/gorm"
-	//load postgres driver.
 
 	// loag postgres driver
 	_ "github.com/lib/pq"
@@ -139,6 +139,8 @@ const (
 
 	// FlashKey is the key used to store flash messages in seesion
 	FlashKey = "_flash"
+
+	csrfTokenLength = 32
 )
 
 //Config conains configuration settings for hero.
@@ -281,10 +283,17 @@ func NewServer(cfg *Config, gen TokenGenerator, view View) *Server {
 // Init registers the url routes. This uses *http.ServerMux as its router.
 func (s *Server) Init() *Server {
 
+	//csrf protection
+	tok, err := generateRandomToken(csrfTokenLength)
+	if err != nil {
+		panic(err)
+	}
+	protect := csrf.Protect(tok)
+
 	// normal stuffs
 	s.mux.HandleFunc(HomePath, s.Home)
-	s.mux.HandleFunc(RegisterPath, s.Register)
-	s.mux.HandleFunc(LoginPath, s.Login)
+	s.mux.Handle(RegisterPath, protect(http.HandlerFunc(s.Register)))
+	s.mux.Handle(LoginPath, protect(http.HandlerFunc(s.Login)))
 	s.mux.HandleFunc(LogoutPath, s.Logout)
 	s.mux.HandleFunc(ProfilePath, s.Profile)
 	s.mux.HandleFunc(ClientsPath, s.Client)
@@ -851,6 +860,7 @@ func (s *Server) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	data[csrf.TemplateTag] = csrf.TemplateField(r)
 	err := s.view.Render(w, s.cfg.RegisterTemplate, data)
 	if err != nil {
 		s.log.Println(err)
@@ -879,6 +889,7 @@ func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 		// loggin failed
 		return
 	}
+	data[csrf.TemplateTag] = csrf.TemplateField(r)
 	err := s.view.Render(w, s.cfg.LoginTemplate, data)
 	if err != nil {
 		s.log.Println(err)

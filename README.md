@@ -187,7 +187,7 @@ The project [osin](https://github.com/RangelReale/osin) is the foundation from w
 *  ~~Add logging support.~~
 *  ~~Templates hot reload.~~
 *  Livereload.
-*  XSRF protection.
+*  ~~XSRF protection.~~
 *  ~~Flash messages.~~
 
 # Licence

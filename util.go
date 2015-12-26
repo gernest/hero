@@ -1,8 +1,10 @@
 package hero
 
 import (
+	"crypto/rand"
 	"errors"
 	"fmt"
+	"io"
 	"net/url"
 	"strings"
 
@@ -123,4 +125,13 @@ func hashString(secret string) (string, error) {
 
 func compareHashedString(hashed, str string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashed), []byte(str))
+}
+
+func generateRandomToken(length int) ([]byte, error) {
+	tok := make([]byte, length)
+	_, err := io.ReadFull(rand.Reader, tok)
+	if err != nil {
+		return nil, err
+	}
+	return tok, nil
 }

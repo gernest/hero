@@ -80,3 +80,16 @@ func TestValidURL(t *testing.T) {
 		}
 	}
 }
+
+func TestRandGenerator(t *testing.T) {
+	sample := []int{32, 64}
+	for _, v := range sample {
+		token, err := generateRandomToken(v)
+		if err != nil {
+			t.Error(err)
+		}
+		if len(token) != v {
+			t.Errorf("expected %d got %d", v, len(token))
+		}
+	}
+}

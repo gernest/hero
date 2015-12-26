@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/PuerkitoBio/goquery"
 	"github.com/antonholmquist/jason"
 )
 
@@ -46,27 +47,41 @@ func TestServer_Register(t *testing.T) {
 		registerParams.confirm:  {genericUser.Password},
 	}
 
-	req, err := http.NewRequest("POST", RegisterPath, strings.NewReader(regVars.Encode()))
+	req, err := http.NewRequest("GET", RegisterPath, nil)
 	if err != nil {
 		t.Error(err)
 	}
-
-	req.Header.Set("Content-Type", formURLEncoded)
-
 	w := httptest.NewRecorder()
-
 	testServer.ServeHTTP(w, req)
-
-	if w.Code != http.StatusFound {
-		t.Errorf("expected %d got %d", http.StatusFound, w.Code)
+	doc, err := goquery.NewDocumentFromReader(w.Body)
+	if err != nil {
+		t.Error(err)
 	}
-
-	req, _ = http.NewRequest("GET", RegisterPath, nil)
-	w = httptest.NewRecorder()
-	testServer.ServeHTTP(w, req)
-
+	tokField := doc.Find("input").First().Get(0)
+	var tok string
+	for _, v := range tokField.Attr {
+		if v.Key == "value" {
+			tok = v.Val
+		}
+	}
 	if w.Code != http.StatusOK {
 		t.Errorf("expected  %d got %d", http.StatusFound, w.Code)
+	}
+	regVars.Set("gorilla.csrf.Token", tok)
+
+	cookies := readSetCookies(w.HeaderMap)
+	req, err = http.NewRequest("POST", RegisterPath, strings.NewReader(regVars.Encode()))
+	if err != nil {
+		t.Error(err)
+	}
+	req.Header.Set("Content-Type", formURLEncoded)
+	for _, v := range cookies {
+		req.AddCookie(v)
+	}
+	w = httptest.NewRecorder()
+	testServer.ServeHTTP(w, req)
+	if w.Code != http.StatusFound {
+		t.Errorf("expected %d got %d", http.StatusFound, w.Code)
 	}
 }
 
@@ -74,31 +89,44 @@ func TestServer_Login(t *testing.T) {
 	if !dbConn.isOpne {
 		t.Skip()
 	}
+
+	req, _ := http.NewRequest("GET", LoginPath, nil)
+	w := httptest.NewRecorder()
+	testServer.ServeHTTP(w, req)
+	if w.Code != http.StatusOK {
+		t.Errorf("expected  %d got %d", http.StatusFound, w.Code)
+	}
+	doc, err := goquery.NewDocumentFromReader(w.Body)
+	if err != nil {
+		t.Error(err)
+	}
+	tokField := doc.Find("input").First().Get(0)
+	var tok string
+	for _, v := range tokField.Attr {
+		if v.Key == "value" {
+			tok = v.Val
+		}
+	}
+
 	logVars := url.Values{
 		loginParams.username: {genericUser.UserName},
 		loginParams.password: {genericUser.Password},
 	}
-	req, err := http.NewRequest("POST", LoginPath, strings.NewReader(logVars.Encode()))
+	logVars.Set("gorilla.csrf.Token", tok)
+	cookies := readSetCookies(w.HeaderMap)
+
+	req, err = http.NewRequest("POST", LoginPath, strings.NewReader(logVars.Encode()))
 	if err != nil {
 		t.Error(err)
 	}
-
 	req.Header.Set("Content-Type", formURLEncoded)
-
-	w := httptest.NewRecorder()
-
-	testServer.ServeHTTP(w, req)
-
-	if w.Code != http.StatusFound {
-		t.Errorf("expected %d got %d", http.StatusFound, w.Code)
+	for _, v := range cookies {
+		req.AddCookie(v)
 	}
-
-	req, _ = http.NewRequest("GET", LoginPath, nil)
 	w = httptest.NewRecorder()
 	testServer.ServeHTTP(w, req)
-
-	if w.Code != http.StatusOK {
-		t.Errorf("expected  %d got %d", http.StatusFound, w.Code)
+	if w.Code != http.StatusFound {
+		t.Errorf("expected %d got %d", http.StatusFound, w.Code)
 	}
 }
 

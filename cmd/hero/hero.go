@@ -121,7 +121,6 @@ func server(ctx *cli.Context) {
 			fmt.Println(ferr)
 			return
 		}
-		fmt.Println(key, "  ", cert)
 		s.RunTLS(cert, key)
 		return
 	}

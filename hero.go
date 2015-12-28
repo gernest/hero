@@ -1114,6 +1114,17 @@ func (s *Server) Run() {
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), s))
 }
 
+// RunTLS runs hero webserver with https.
+func (s *Server) RunTLS(cert, key string) {
+	host := "https://localhost"
+	port := 443
+	if s.cfg.Port != 0 {
+		port = s.cfg.Port
+	}
+	s.log.Printf("starting hero service at  %s:%d \n", host, port)
+	log.Fatal(http.ListenAndServeTLS(fmt.Sprintf(":%d", port), cert, key, s))
+}
+
 // TestClient creates a user usr and a new client c for usr, this is a helper for testing purpose.
 func (s *Server) TestClient(usr *User, c *Client) (*User, *Client) {
 	hpas, err := hashString(usr.Password)

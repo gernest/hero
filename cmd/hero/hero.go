@@ -66,9 +66,19 @@ func serverCommand() cli.Command {
 				Name:  "dev",
 				Usage: "enable development server",
 			},
-			cli.BoolTFlag{
+			cli.BoolFlag{
 				Name:  "https",
 				Usage: "enable https",
+			},
+			cli.StringFlag{
+				Name:   "cert",
+				Usage:  "The filepath to a ssl certificate",
+				EnvVar: "HERO_HTTPS_CERT",
+			},
+			cli.StringFlag{
+				Name:   "key",
+				Usage:  "The filepath to a rsa key used to sign the ssl certificate",
+				EnvVar: "HERO_HTTPS_KEY",
 			},
 		},
 	}
@@ -98,6 +108,24 @@ func server(ctx *cli.Context) {
 	if ctx.BoolT("migrate") {
 		s.Migrate()
 	}
+	if ctx.BoolT("https") {
+		cert := ctx.String("cert")
+		_, ferr := os.Stat(cert)
+		if ferr != nil {
+			fmt.Println(ferr)
+			return
+		}
+		key := ctx.String("key")
+		_, ferr = os.Stat(cert)
+		if ferr != nil {
+			fmt.Println(ferr)
+			return
+		}
+		fmt.Println(key, "  ", cert)
+		s.RunTLS(cert, key)
+		return
+	}
+
 	s.Run()
 }
 

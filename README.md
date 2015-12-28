@@ -180,7 +180,7 @@ The project [osin](https://github.com/RangelReale/osin) is the foundation from w
 
 *  ~~Fix a lot of typos (English is my third language).~~
 *  implement the views templates( I need help here, I suck at styles)
-* ~~ Support https.~~
+* ~~Support https.~~
 *  Add extensive documentation.
 *  ~~Demo with examples.~~
 *  Let's encrypt integration.

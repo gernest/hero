@@ -25,6 +25,8 @@ var genericClient = Client{
 	Secret: "mysecret",
 }
 
+var testCode string
+
 func TestServer_Home(t *testing.T) {
 	req, _ := http.NewRequest("GET", HomePath, nil)
 	w := httptest.NewRecorder()
@@ -318,6 +320,7 @@ func TestServer_Authorize(t *testing.T) {
 	if code == "" {
 		t.Error("expected grant code")
 	}
+	testCode = code
 
 	tokenParams := url.Values{
 		params.clientID:      {client.UUID},
@@ -380,6 +383,7 @@ func TestServer_Access(t *testing.T) {
 
 	//
 	// case request_type authorization_code
+	// and the code is not set
 	//
 	accessParams = url.Values{
 		params.clientID:     {genericClient.UUID},
@@ -391,9 +395,38 @@ func TestServer_Access(t *testing.T) {
 		t.Error(err)
 	}
 	req.Header.Set("Content-Type", formURLEncoded)
-
 	w = httptest.NewRecorder()
-
 	testServer.ServeHTTP(w, req)
 
+	// case a bad code
+	accessParams.Set(params.code, "bad xodw")
+	req, err = http.NewRequest("POST", testServer.cfg.TokenEndpoint, strings.NewReader(accessParams.Encode()))
+	if err != nil {
+		t.Error(err)
+	}
+	req.Header.Set("Content-Type", formURLEncoded)
+	w = httptest.NewRecorder()
+	testServer.ServeHTTP(w, req)
+	jObj, err := jason.NewObjectFromReader(w.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// check error key
+	resErr, err := jObj.GetString("error")
+	if err != nil {
+		t.Error(err)
+	}
+	if resErr != errorsKeys.UnauthorizedClient {
+		t.Errorf("expected %s got %s", errorsKeys.UnauthorizedClient, resErr)
+	}
+
+	// case a good code
+	accessParams.Set(params.code, testCode)
+	req, err = http.NewRequest("POST", testServer.cfg.TokenEndpoint, strings.NewReader(accessParams.Encode()))
+	if err != nil {
+		t.Error(err)
+	}
+	req.Header.Set("Content-Type", formURLEncoded)
+	w = httptest.NewRecorder()
+	testServer.ServeHTTP(w, req)
 }

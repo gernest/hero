@@ -5,6 +5,8 @@
   - [Usage](#usage)
 2. [Configuration](#configuration)
 3. [Lets Encrypt integration](# Lets Encrypt integration)
+4. [Author](#author)
+5. [LICENCE](#licence)
 
 # Getting started
 
@@ -152,3 +154,18 @@ cLient_template       |  string   | the name of template to render on create/rea
 profile_template      |  string   | the name of the template to render on user profile
 home_template         |  string   | the name of the template to render at home page
 
+# Author
+Geofrey Ernest
+
+Twitter  : [@gernesti](https://twitter.com/gernesti)
+
+
+
+# Aknowledgement
+
+The project [osin](https://github.com/RangelReale/osin) is the foundation from which I got insight and direction of how oauth 2 works.
+
+
+# Licence
+
+This project is released under the MIT licence.

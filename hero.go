@@ -213,6 +213,7 @@ func DefaultConfig() *Config {
 			"password", "client_credentials",
 			"assertion",
 		},
+		TokenType:           "Bearer",
 		AuthorizationExpire: 200,
 		AccessExpire:        200,
 		AuthEndpoint:        "/authorize",

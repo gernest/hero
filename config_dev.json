@@ -10,7 +10,7 @@
 		"client_credentials",
 		"assertion"
 	],
-	"token_type": "",
+	"token_type": "Bearer",
 	"provider_name": "",
 	"auth_endpoint": "/authorize",
 	"token_endpoint": "/tokens",

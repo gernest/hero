@@ -353,7 +353,6 @@ func TestServer_Access(t *testing.T) {
 		t.Error(err)
 	}
 	w := httptest.NewRecorder()
-
 	testServer.ServeHTTP(w, req)
 
 	//
@@ -422,6 +421,40 @@ func TestServer_Access(t *testing.T) {
 
 	// case a good code
 	accessParams.Set(params.code, testCode)
+	req, err = http.NewRequest("POST", testServer.cfg.TokenEndpoint, strings.NewReader(accessParams.Encode()))
+	if err != nil {
+		t.Error(err)
+	}
+	req.Header.Set("Content-Type", formURLEncoded)
+	w = httptest.NewRecorder()
+	testServer.ServeHTTP(w, req)
+
+	//
+	// Access using refesh token
+	//
+	accessParams.Set(params.grantType, grantType.RefreshToken)
+	jObj, err = jason.NewObjectFromReader(w.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// checkrefresh token
+	refreshTok, err := jObj.GetString("refresh_token")
+	if err != nil {
+		t.Error(err)
+	}
+	accessParams.Set(params.refreshToken, refreshTok)
+	req, err = http.NewRequest("POST", testServer.cfg.TokenEndpoint, strings.NewReader(accessParams.Encode()))
+	if err != nil {
+		t.Error(err)
+	}
+	req.Header.Set("Content-Type", formURLEncoded)
+	w = httptest.NewRecorder()
+	testServer.ServeHTTP(w, req)
+
+	//
+	// Access using client credentials
+	//
+	accessParams.Set(params.grantType, grantType.ClientCredentials)
 	req, err = http.NewRequest("POST", testServer.cfg.TokenEndpoint, strings.NewReader(accessParams.Encode()))
 	if err != nil {
 		t.Error(err)

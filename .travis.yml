@@ -1,7 +1,6 @@
 language: go
 go: 
  - 1.5
- - release
 before_install:
  - go get -t -v
  - go get -t -v ./cmd/hero

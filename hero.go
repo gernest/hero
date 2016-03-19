@@ -264,7 +264,7 @@ func NewServer(cfg *Config, gen TokenGenerator, view View) *Server {
 		panic(err)
 	}
 	q := &query{}
-	q.DB = &db
+	q.DB = db
 	if view == nil {
 		view, err = NewDefaultView(cfg.TemplatesDir, false)
 		if err != nil {
@@ -325,7 +325,7 @@ func (s *Server) Authorize(w http.ResponseWriter, r *http.Request) {
 
 	client, err := s.q.ClientByCode(clientID)
 	if err != nil {
-		if err.Error() == gorm.RecordNotFound.Error() {
+		if err.Error() == gorm.ErrRecordNotFound.Error() {
 			ctx.SetErrorState(errorsKeys.UnauthorizedClient, "", state)
 		} else {
 			ctx.SetErrorState(errorsKeys.ServerError, "", state)

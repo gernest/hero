@@ -27,7 +27,7 @@ func TestMain(m *testing.M) {
 			fmt.Printf("hero: some tests wont run due to bad database connection %v \n", err)
 		} else {
 			dbConn.isOpne = true
-			dbConn.db = &db
+			dbConn.db = db
 			config := DefaultConfig()
 
 			testServer = NewServer(config, &SimpleTokenGen{}, nil)

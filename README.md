@@ -19,14 +19,17 @@ Hero is a commadline application.  It also offers a library that you can use to 
 
 # Features
 
-* User account management
-* Encrypted passwords and client secrets.
-* Client management
-* oauth 2 [rfc 6749](http://tools.ietf.org/html/rfc6749) compliant
-* Configurable.
-* Multiple databases( postgres, mysql and foundation)
-* Hot templates reload for rapid development(no need to recompile when run with `-dev` flag).
-
+- [ ]  User account management
+- [x]  Encrypted passwords and client secrets.
+- [ ]  Client management
+- [x]  oauth 2 [rfc 6749](http://tools.ietf.org/html/rfc6749) compliant
+- [x]  Configurable.
+- [x]  Multiple databases( postgres, mysql and foundation)
+- [x]  Hot templates reload for rapid development(no need to recompile when run with `-dev` flag).
+- [ ]  csrf protection
+- [x]  http2 support
+- [ ]  https support
+- [ ]  Let's encrypt integration
 
 # Project Status
 Hero is in early development a.k.a alpha state.
@@ -175,20 +178,6 @@ Twitter  : [@gernesti](https://twitter.com/gernesti)
 The project [osin](https://github.com/RangelReale/osin) is the foundation from which I got insight and direction of how oauth 2 works.
 
 
-
-# TODO
-
-*  ~~Fix a lot of typos (English is my third language).~~
-*  implement the views templates( I need help here, I suck at styles)
-* ~~Support https.~~
-*  Add extensive documentation.
-*  ~~Demo with examples.~~
-*  Let's encrypt integration.
-*  ~~Add logging support.~~
-*  ~~Templates hot reload.~~
-*  Livereload.
-*  ~~XSRF protection.~~
-*  ~~Flash messages.~~
 
 # Licence
 

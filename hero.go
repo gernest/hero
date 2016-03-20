@@ -1002,6 +1002,10 @@ func (s *Server) Client(w http.ResponseWriter, r *http.Request) {
 
 	switch uAction {
 	case "delete":
+
+		// Deelete the client whose id is specified in the url query paramater clID
+		// TODO(gernest): choose a decent name for the query parameter instead of
+		// clID
 		cID := q.Get("clID")
 		clientID, err := strconv.Atoi(cID)
 		if err != nil {

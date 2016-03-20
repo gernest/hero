@@ -300,7 +300,8 @@ func (s *Server) Init() *Server {
 	s.mux.HandleFunc(s.cfg.InfoEndpoint, s.Info)
 
 	// static stuffs
-	s.mux.Handle(StaticPath, http.StripPrefix(StaticPath, http.FileServer(http.Dir(s.cfg.StaticDir))))
+	s.mux.PathPrefix(StaticPath).
+		Handler(http.StripPrefix(StaticPath, http.FileServer(http.Dir(s.cfg.StaticDir))))
 	return s
 }
 

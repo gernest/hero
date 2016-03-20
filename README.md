@@ -179,20 +179,6 @@ The project [osin](https://github.com/RangelReale/osin) is the foundation from w
 
 
 
-# TODO
-
-*  ~~Fix a lot of typos (English is my third language).~~
-*  implement the views templates( I need help here, I suck at styles)
-* ~~Support https.~~
-*  Add extensive documentation.
-*  ~~Demo with examples.~~
-*  Let's encrypt integration.
-*  ~~Add logging support.~~
-*  ~~Templates hot reload.~~
-*  Livereload.
-*  ~~XSRF protection.~~
-*  ~~Flash messages.~~
-
 # Licence
 
 This project is released under the MIT licence. See [LICENCE](LICENCE) for more details.

@@ -7,7 +7,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/PuerkitoBio/goquery"
 	"github.com/antonholmquist/jason"
 )
 
@@ -55,22 +54,9 @@ func TestServer_Register(t *testing.T) {
 	}
 	w := httptest.NewRecorder()
 	testServer.ServeHTTP(w, req)
-	doc, err := goquery.NewDocumentFromReader(w.Body)
-	if err != nil {
-		t.Error(err)
-	}
-	tokField := doc.Find("input").First().Get(0)
-	var tok string
-	for _, v := range tokField.Attr {
-		if v.Key == "value" {
-			tok = v.Val
-		}
-	}
 	if w.Code != http.StatusOK {
 		t.Errorf("expected  %d got %d", http.StatusFound, w.Code)
 	}
-	regVars.Set("gorilla.csrf.Token", tok)
-
 	cookies := readSetCookies(w.HeaderMap)
 	req, err = http.NewRequest("POST", RegisterPath, strings.NewReader(regVars.Encode()))
 	if err != nil {
@@ -98,26 +84,12 @@ func TestServer_Login(t *testing.T) {
 	if w.Code != http.StatusOK {
 		t.Errorf("expected  %d got %d", http.StatusFound, w.Code)
 	}
-	doc, err := goquery.NewDocumentFromReader(w.Body)
-	if err != nil {
-		t.Error(err)
-	}
-	tokField := doc.Find("input").First().Get(0)
-	var tok string
-	for _, v := range tokField.Attr {
-		if v.Key == "value" {
-			tok = v.Val
-		}
-	}
-
 	logVars := url.Values{
 		loginParams.username: {genericUser.UserName},
 		loginParams.password: {genericUser.Password},
 	}
-	logVars.Set("gorilla.csrf.Token", tok)
 	cookies := readSetCookies(w.HeaderMap)
-
-	req, err = http.NewRequest("POST", LoginPath, strings.NewReader(logVars.Encode()))
+	req, err := http.NewRequest("POST", LoginPath, strings.NewReader(logVars.Encode()))
 	if err != nil {
 		t.Error(err)
 	}

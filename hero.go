@@ -13,7 +13,7 @@ import (
 
 	// load mysql driver.
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/gorilla/csrf"
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 
 	// loag postgres driver
@@ -248,7 +248,7 @@ type Server struct {
 	view  View
 	log   Logger
 	store *Store
-	mux   *http.ServeMux
+	mux   *mux.Router
 }
 
 //NewServer creates a new *Server.
@@ -277,7 +277,7 @@ func NewServer(cfg *Config, gen TokenGenerator, view View) *Server {
 		gen:   gen,
 		view:  view,
 		log:   NewLogger(),
-		mux:   http.NewServeMux(),
+		mux:   mux.NewRouter(),
 		store: DefaultStore(q.DB),
 	}
 	return s.Init()
@@ -285,13 +285,11 @@ func NewServer(cfg *Config, gen TokenGenerator, view View) *Server {
 
 // Init registers the url routes. This uses *http.ServerMux as its router.
 func (s *Server) Init() *Server {
-	// csrf protection
-	protect := csrf.Protect([]byte(s.cfg.CsrfSecret))
 
 	// normal stuffs
 	s.mux.HandleFunc(HomePath, s.Home)
-	s.mux.Handle(RegisterPath, protect(http.HandlerFunc(s.Register)))
-	s.mux.Handle(LoginPath, protect(http.HandlerFunc(s.Login)))
+	s.mux.HandleFunc(RegisterPath, s.Register)
+	s.mux.HandleFunc(LoginPath, s.Login)
 	s.mux.HandleFunc(LogoutPath, s.Logout)
 	s.mux.HandleFunc(ProfilePath, s.Profile)
 	s.mux.HandleFunc(ClientsPath, s.Client)
@@ -858,7 +856,6 @@ func (s *Server) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data[csrf.TemplateTag] = csrf.TemplateField(r)
 	err := s.view.Render(w, s.cfg.RegisterTemplate, data)
 	if err != nil {
 		s.log.Println(err)
@@ -887,7 +884,6 @@ func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 		// loggin failed
 		return
 	}
-	data[csrf.TemplateTag] = csrf.TemplateField(r)
 	err := s.view.Render(w, s.cfg.LoginTemplate, data)
 	if err != nil {
 		s.log.Println(err)

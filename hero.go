@@ -852,7 +852,7 @@ func (s *Server) Register(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		http.Redirect(w, r, RegisterPath, http.StatusFound)
+		http.Redirect(w, r, LoginPath, http.StatusFound)
 		return
 	}
 

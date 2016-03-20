@@ -143,7 +143,7 @@ func TestServer_Logout(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	testServer.SaveToSession(w, req, "UserID", user.ID)
+	_ = testServer.SaveToSession(w, req, "UserID", user.ID)
 
 	if _, ok := testServer.isSession(req); !ok {
 		t.Error("expcted session")

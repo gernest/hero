@@ -37,8 +37,8 @@ func TestMain(m *testing.M) {
 	status := m.Run()
 	if dbConn.isOpne {
 		testServer.DropAllTables()
-		dbConn.db.Close()
-		testServer.q.Close()
+		_ = dbConn.db.Close()
+		_ = testServer.q.Close()
 	}
 	os.Exit(status)
 }

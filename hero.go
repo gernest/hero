@@ -308,14 +308,14 @@ func (s *Server) Init() *Server {
 
 // Authorize provide oauth2 authorization.
 func (s *Server) Authorize(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
+	_ = r.ParseForm()
 
 	ctx := newContext(w)
 	redirectURI, err := url.QueryUnescape(r.Form.Get(params.redirectURL))
 	if err != nil {
 		ctx.SetErrorState(errorsKeys.InvalidRequest, "", "")
 		ctx.InternalError = err
-		ctx.CommitJSON()
+		_ = ctx.CommitJSON()
 		return
 	}
 
@@ -331,13 +331,13 @@ func (s *Server) Authorize(w http.ResponseWriter, r *http.Request) {
 			ctx.SetErrorState(errorsKeys.ServerError, "", state)
 		}
 		ctx.InternalError = err
-		ctx.CommitJSON()
+		_ = ctx.CommitJSON()
 		return
 	}
 
 	if client.RedirectURL == "" {
 		ctx.SetErrorState(errorsKeys.UnauthorizedClient, "", state)
-		ctx.CommitJSON()
+		_ = ctx.CommitJSON()
 		return
 	}
 
@@ -348,7 +348,7 @@ func (s *Server) Authorize(w http.ResponseWriter, r *http.Request) {
 	if err = validateURIList(client.RedirectURL, redirectURI, s.cfg.RedirSeparator); err != nil {
 		ctx.SetErrorState(errorsKeys.InvalidRequest, "", state)
 		ctx.InternalError = err
-		ctx.CommitJSON()
+		_ = ctx.CommitJSON()
 		return
 	}
 
@@ -431,7 +431,7 @@ func (s *Server) Authorize(w http.ResponseWriter, r *http.Request) {
 		ctx.SetErrorState(errorsKeys.UnsupportedResponseType, "", state)
 
 	}
-	ctx.CommitJSON()
+	_ = ctx.CommitJSON()
 }
 
 // Access provide oauth 2.0  access. This support all grant rypes specified by RFC 6976 namely
@@ -445,17 +445,17 @@ func (s Server) Access(w http.ResponseWriter, r *http.Request) {
 		if !s.cfg.AllowGetAccess {
 			ctx.SetError(errorsKeys.InvalidRequest, "")
 			ctx.InternalError = errors.New("request must be POSt")
-			ctx.CommitJSON()
+			_ = ctx.CommitJSON()
 			return
 		}
 	}
 	if r.Method != "POST" {
 		ctx.SetError(errorsKeys.InvalidRequest, "")
 		ctx.InternalError = errors.New("request must be POSt")
-		ctx.CommitJSON()
+		_ = ctx.CommitJSON()
 		return
 	}
-	r.ParseForm()
+	_ = r.ParseForm()
 
 	accessGrant := r.Form.Get(params.grantType)
 	redirectURI := r.Form.Get(params.redirectURL)
@@ -466,7 +466,7 @@ func (s Server) Access(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		ctx.SetError(errorsKeys.InvalidClient, "")
 		ctx.InternalError = err
-		ctx.CommitJSON()
+		_ = ctx.CommitJSON()
 		return
 	}
 
@@ -636,7 +636,7 @@ func (s Server) Access(w http.ResponseWriter, r *http.Request) {
 	} else {
 		ctx.SetError(errorsKeys.UnsupportedGrantType, "")
 	}
-	ctx.CommitJSON()
+	_ = ctx.CommitJSON()
 }
 
 func (s *Server) getClient(auth interface{}) *Client {
@@ -748,47 +748,47 @@ func (s *Server) Info(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		ctx.SetError(errorsKeys.InvalidRequest, "")
 		ctx.InternalError = err
-		ctx.CommitJSON()
+		_ = ctx.CommitJSON()
 		return
 	}
 
 	bearer := checkBearerAuth(r)
 	if bearer == nil {
 		ctx.SetError(errorsKeys.InvalidRequest, "")
-		ctx.CommitJSON()
+		_ = ctx.CommitJSON()
 		return
 	}
 
 	if bearer.Code == "" {
 		ctx.SetError(errorsKeys.InvalidRequest, "")
-		ctx.CommitJSON()
+		_ = ctx.CommitJSON()
 		return
 	}
 
 	client := s.getClient(bearer)
 	if client == nil {
 		ctx.SetError(errorsKeys.UnauthorizedClient, "")
-		ctx.CommitJSON()
+		_ = ctx.CommitJSON()
 		return
 	}
 
 	grant, err := s.q.GrantByBearer(bearer.Code)
 	if err != nil {
 		ctx.SetError(errorsKeys.InvalidGrant, "")
-		ctx.CommitJSON()
+		_ = ctx.CommitJSON()
 		return
 	}
 
 	if grant.IsExpired() {
 		ctx.SetError(errorsKeys.InvalidGrant, "")
-		ctx.CommitJSON()
+		_ = ctx.CommitJSON()
 		return
 	}
 
 	user, err := s.q.UserByID(grant.UserID)
 	if err != nil {
 		ctx.SetError(errorsKeys.InvalidGrant, "")
-		ctx.CommitJSON()
+		_ = ctx.CommitJSON()
 		return
 	}
 
@@ -800,14 +800,14 @@ func (s *Server) Info(w http.ResponseWriter, r *http.Request) {
 	default:
 		ctx.SetError(errorsKeys.InvalidGrant, "")
 	}
-	ctx.CommitJSON()
+	_ = ctx.CommitJSON()
 }
 
 // Register registers a new user.
 func (s *Server) Register(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]interface{})
 	data["Config"] = s.cfg
-	r.ParseForm()
+	_ = r.ParseForm()
 	if r.Method == "POST" {
 		username := r.Form.Get(registerParams.username)
 		password := r.Form.Get(registerParams.password)
@@ -872,7 +872,7 @@ func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 	data["Title"] = "login"
 	data["Config"] = s.cfg
 	if r.Method == "POST" {
-		r.ParseForm()
+		_ = r.ParseForm()
 		usr := s.loginUser(w, r)
 		if usr != nil {
 			// create session and redirect to the homepage
@@ -894,7 +894,7 @@ func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func (s *Server) loginUser(w http.ResponseWriter, r *http.Request) *User {
-	r.ParseForm()
+	_ = r.ParseForm()
 	data := make(map[string]interface{})
 	data["Config"] = s.cfg
 	data["Title"] = "login"
@@ -939,7 +939,7 @@ func (s *Server) validUser(r *http.Request, username, password string) *User {
 
 // Logout deletes sessions and logs out user.
 func (s *Server) Logout(w http.ResponseWriter, r *http.Request) {
-	s.DeleteSession(w, r, s.cfg.SessionName)
+	_ = s.DeleteSession(w, r, s.cfg.SessionName)
 	http.Redirect(w, r, HomePath, http.StatusFound)
 }
 
@@ -957,7 +957,7 @@ func (s *Server) Client(w http.ResponseWriter, r *http.Request) {
 	u := q.Get("uid")
 	uAction := q.Get("uact")
 
-	r.ParseForm()
+	_ = r.ParseForm()
 	data := make(map[string]interface{})
 	data[contextParams.Config] = s.cfg
 
@@ -965,7 +965,7 @@ func (s *Server) Client(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		data[contextParams.Message] = err.Error()
 		w.WriteHeader(http.StatusInternalServerError)
-		s.view.Render(w, s.cfg.ErrorTemplate, data)
+		_ = s.view.Render(w, s.cfg.ErrorTemplate, data)
 		return
 	}
 
@@ -988,7 +988,7 @@ func (s *Server) Client(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				data[contextParams.Message] = err.Error()
 				w.WriteHeader(http.StatusInternalServerError)
-				s.view.Render(w, s.cfg.ErrorTemplate, data)
+				_ = s.view.Render(w, s.cfg.ErrorTemplate, data)
 				return
 			}
 			c.Secret = secret
@@ -996,7 +996,7 @@ func (s *Server) Client(w http.ResponseWriter, r *http.Request) {
 			if err = s.q.SaveModel(usr); err != nil {
 				data[contextParams.Message] = err.Error()
 				w.WriteHeader(http.StatusInternalServerError)
-				s.view.Render(w, s.cfg.ErrorTemplate, data)
+				_ = s.view.Render(w, s.cfg.ErrorTemplate, data)
 				return
 			}
 			http.Redirect(w, r, ClientsPath, http.StatusFound)
@@ -1011,7 +1011,7 @@ func (s *Server) Client(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			data[contextParams.Message] = err.Error()
 			w.WriteHeader(http.StatusInternalServerError)
-			s.view.Render(w, s.cfg.ErrorTemplate, data)
+			_ = s.view.Render(w, s.cfg.ErrorTemplate, data)
 			return
 		}
 
@@ -1020,13 +1020,13 @@ func (s *Server) Client(w http.ResponseWriter, r *http.Request) {
 		if d.Error != nil {
 			data[contextParams.Message] = d.Error.Error()
 			w.WriteHeader(http.StatusInternalServerError)
-			s.view.Render(w, s.cfg.ErrorTemplate, data)
+			_ = s.view.Render(w, s.cfg.ErrorTemplate, data)
 			return
 		}
 		if err = s.q.DeleteModel(client); err != nil {
 			data[contextParams.Message] = err.Error()
 			w.WriteHeader(http.StatusInternalServerError)
-			s.view.Render(w, s.cfg.ErrorTemplate, data)
+			_ = s.view.Render(w, s.cfg.ErrorTemplate, data)
 			return
 		}
 	}
@@ -1157,7 +1157,7 @@ func (s *Server) GetFlashMessages(r *http.Request, w http.ResponseWriter) FlashM
 	ss, _ := s.store.Get(r, s.cfg.SessionName)
 	if v, ok := ss.Values[FlashKey]; ok {
 		delete(ss.Values, FlashKey)
-		ss.Save(r, w)
+		_ = ss.Save(r, w)
 		return v.(FlashMessages)
 	}
 	return nil

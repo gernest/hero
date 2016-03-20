@@ -57,6 +57,6 @@ func TestContext(t *testing.T) {
 	}
 
 	// commitJSON
-	ctx.CommitJSON()
+	_ = ctx.CommitJSON()
 
 }

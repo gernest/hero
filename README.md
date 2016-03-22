@@ -28,7 +28,7 @@ Hero is a commadline application.  It also offers a library that you can use to 
 - [x]  Hot templates reload for rapid development(no need to recompile when run with `-dev` flag).
 - [ ]  csrf protection
 - [x]  http2 support
-- [ ]  https support
+- [x]  https support
 - [ ]  Let's encrypt integration
 
 # Project Status

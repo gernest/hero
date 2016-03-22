@@ -128,6 +128,9 @@ const (
 	//ProfilePath is the route for user profile
 	ProfilePath = "/profile"
 
+	//ProfileUpdatePath is the route for updating user profile
+	ProfileUpdatePath = "/profile/update"
+
 	//ClientsPath is the route for user clients
 	ClientsPath = "/clients"
 
@@ -292,6 +295,7 @@ func (s *Server) Init() *Server {
 	s.mux.HandleFunc(LoginPath, s.Login)
 	s.mux.HandleFunc(LogoutPath, s.Logout)
 	s.mux.HandleFunc(ProfilePath, s.Profile)
+	s.mux.HandleFunc(ProfileUpdatePath, s.ProfileUpdate).Methods("GET", "POST")
 	s.mux.HandleFunc(ClientsPath, s.Client)
 
 	// oauth stuffs
@@ -1081,6 +1085,11 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 //Profile handle user profile.
 func (s *Server) Profile(w http.ResponseWriter, r *http.Request) {
+
+}
+
+//ProfileUpdate handle updating user profile.
+func (s *Server) ProfileUpdate(w http.ResponseWriter, r *http.Request) {
 
 }
 

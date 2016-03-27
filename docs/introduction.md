@@ -1,14 +1,3 @@
-# Table of contents
-1. [Getting started](#getting-started)
-  - [Introduction](#what-is-hero-)
-  - [Installation](#installation)
-  - [Usage](#usage)
-2. [Configuration](#configuration)
-3. [Lets Encrypt integration](# Lets Encrypt integration)
-4. [Author](#author)
-5. [LICENCE](#licence)
-
-# Getting started
 
 ## What is hero ?
 

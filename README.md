@@ -2,17 +2,6 @@
 hero is a feature rich oauth 2 server implementation in Go.
 
 
-## Table of contents
-
-- [ ] [Introduction]()
-  - [ ] [What is hero](docs/introduction.md#what-is-hero-)
-  - [x] [features](docs/introduction.md#features)
-  - [x] [getting started]()
-- [ ] [configuration](docs/config.md#configuration)
-- [ ] [User management]()
-- [ ] [clients management]()
-- [ ] [Contributing to hero]()
-
 # Features
 
 - [ ]  User account management
@@ -26,6 +15,19 @@ hero is a feature rich oauth 2 server implementation in Go.
 - [x]  http2 support
 - [x]  https support
 - [ ]  Let's encrypt integration
+
+## Table of contents
+
+- [ ] [Introduction]()
+  - [ ] [What is hero](docs/introduction.md#what-is-hero-)
+  - [x] [features](docs/introduction.md#features)
+  - [x] [getting started]()
+- [ ] [configuration](docs/config.md#configuration)
+- [ ] [User management]()
+- [ ] [clients management]()
+- [ ] [Contributing to hero]()
+
+
 
 # Project Status
 Hero is in early development a.k.a alpha state.

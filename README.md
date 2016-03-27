@@ -18,8 +18,8 @@ hero is a feature rich oauth 2 server implementation in Go.
 
 ## Table of contents
 
-- [ ] [Getting started](docs/introduction.md#getting-started)
-  - [ ] [What is hero](docs/introduction.md#what-is-hero-)
+- [x] [Getting started](docs/introduction.md#getting-started)
+  - [x] [What is hero](docs/introduction.md#what-is-hero-)
   - [x] [Installation](docs/introduction.md#installation)
   - [x] [How to use](docs/introduction.md#usage)
 - [ ] [configuration](docs/config.md#configuration)

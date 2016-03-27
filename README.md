@@ -1,21 +1,17 @@
 # hero [![Build Status](https://travis-ci.org/gernest/hero.svg)](https://travis-ci.org/gernest/hero)  [![GoDoc](https://godoc.org/github.com/gernest/hero?status.svg)](https://godoc.org/github.com/gernest/hero)
-hero is a heroic oauth 2 provider, which is simple, elegant and beautiful.
+hero is a feature rich oauth 2 server implementation in Go.
 
 
-# What is oauth 2 ?
+## Table of contents
 
-According to [this post](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2)
-
->OAuth 2 is an authorization framework that enables applications to obtain limited access to user accounts on >an HTTP service, such as Facebook, GitHub, and DigitalOcean.
-
-# What is hero?
-
-From the definition of oauth 2 above, there is example of providers that is Facebook,GitHub and DigitalOcean. `hero` enables you to become an oauth 2 provider just like Facebook ,GitHub and DigitalOcean.
-
-This means, hero provides user accounts and also allows  limited access to the accounts.Unlike the other options, with hero you have full control of everything.
-
-
-Hero is a commadline application.  It also offers a library that you can use to compose your own version of oauth 2 provider.
+- [ ] [Introduction]()
+  - [ ] [What is hero]()
+  - [x] [features]()
+  - [x] [getting started]()
+- [ ] [configuration]()
+- [ ] [User management]()
+- [ ] [clients management]()
+- [ ] [Contributing to hero]()
 
 # Features
 

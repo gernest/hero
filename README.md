@@ -5,13 +5,11 @@ hero is a feature rich oauth 2 server implementation in Go.
 # Features
 
 - [ ]  User account management
-- [x]  Encrypted passwords and client secrets.
 - [ ]  Client management
 - [x]  oauth 2 [rfc 6749](http://tools.ietf.org/html/rfc6749) compliant
 - [x]  Configurable.
 - [x]  Multiple databases( postgres, mysql and foundation)
 - [x]  Hot templates reload for rapid development(no need to recompile when run with `-dev` flag).
-- [ ]  csrf protection
 - [x]  http2 support
 - [x]  https support
 - [ ]  Let's encrypt integration

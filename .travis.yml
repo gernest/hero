@@ -4,7 +4,7 @@ go:
 before_install:
  - go get -t -v
  - go get -t -v ./cmd/hero
- - go get github.com/golang/lint/golint
+ - go get golang.org/x/lint/golint
 before_script:
  - psql -c 'create database hero_test;' -U postgres
 script:
